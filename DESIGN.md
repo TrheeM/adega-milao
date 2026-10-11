@@ -34,10 +34,14 @@ The adega as a lit back-bar: real bottle photos standing loose on brass shelves,
 
 ## Motion
 
-- One signature moment: hero bottle switch (photo rotates 0→360 power2.in + 15px blur, swap, →720 back.out(0.7); garnish implode → swap → explode back.out(1.5); flavored-ice bars recolor; background + glow tween 1.5s).
+- Page load (one orchestrated sequence, GSAP timeline, expo.out): title lines blur-rise, bottle turns in on the Y axis from -200° with blur, picker bottles spring up, side title slides in, brand seal spins in.
+- Scroll (ScrollTrigger, once): headings blur-rise; lead offer bottle rises onto its light pool then drifts (scrub parallax); shelves get "stocked" (brass ledge draws in, bottles land with back.out, paper tags swing with elastic.out); map unrolls with clip-path.
+- Brand in motion: spinning type seal around the bulldog in the hero; logo ticker under the hero that drifts and speeds up with scroll velocity.
+
+- Signature switch: hero bottle turntable on the Y axis (two-faced photo: front + mirrored shaded back; 0→360 power2.in + 15px blur, swap, →720 back.out(0.7); garnish implode → swap → explode back.out(1.5); flavored-ice bars recolor; background + glow tween 1.5s).
 - Cursor: bottle tilts (40°/20°), garnish repelled within 400px, parallax ×60 / ×−30 / ×−15.
 - Copão: liquid fills via SVG attr tweens, one big flavored-ice bar drops in with bounce (like the real sachet ice), comanda line prints in steps.
-- `prefers-reduced-motion`: no float/repulsion/bubbles, instant fills.
+- `prefers-reduced-motion`: no intro, reveals, float, repulsion, bubbles, seal spin or ticker; instant fills.
 
 ## 3D
 

@@ -33,7 +33,11 @@ Precisa de servidor (módulos ES e o modelo 3D não abrem via `file://`).
 | `assets/js/main.js` | Catálogo, ofertas, copão, WhatsApp, topo |
 | `assets/js/garnish.js` | Gelo, frutas e folhas 3D do topo (Three.js, carregado depois) |
 | `assets/fonts/` | Bodoni Moda, Schibsted Grotesk e Courier Prime (woff2, SIL OFL) |
-| `assets/vendor/` | GSAP 3.12.5 e Three.js r169 servidos pelo próprio site (do npm) |
+| `assets/vendor/` | GSAP 3.12.5 + ScrollTrigger e Three.js r169 servidos pelo próprio site (do npm) |
+
+## Loja e mapa
+
+Só a loja da Av. Papa João XXIII, 130 aparece. O mapa é o embed do Google Maps (liberado na CSP só para `google.com`). O botão **Quanto falta até a loja?** calcula a distância no próprio navegador: a localização do visitante não é enviada para lugar nenhum.
 
 ## Segurança e desempenho
 

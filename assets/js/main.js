@@ -4,6 +4,8 @@
    ========================================================= */
 import { WHATSAPP, CATEGORIES, PRODUCTS, HERO, OFFERS, COPAO } from './data.js';
 
+document.documentElement.classList.add('js');
+
 /* ---------- helpers ---------- */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -44,8 +46,7 @@ function msgFor(p) {
 const GENERAL_MSG = {
     geral: 'Olá, Adega Milão! Vim pelo site e queria fazer um pedido.',
     entrega: 'Olá, Adega Milão! Queria pedir uma entrega aqui em Lorena. Meu endereço é: ',
-    loja1: 'Olá, Adega Milão! Vim pelo site. Uma dúvida sobre a Loja 1 (Av. Papa João XXIII, 130):',
-    loja2: 'Olá, Adega Milão! Vim pelo site. Uma dúvida sobre a Loja 2 (Av. Bernardino de Campos, 502):',
+    loja1: 'Olá, Adega Milão! Vim pelo site. Uma dúvida sobre a loja (Av. Papa João XXIII, 130):',
 };
 $$('[data-wa]').forEach(a => { a.href = waLink(GENERAL_MSG[a.dataset.wa] || GENERAL_MSG.geral); });
 
@@ -87,15 +88,23 @@ const heroEl = $('#inicio');
 const tiltEl = $('#hero-tilt');
 const bottleEls = HERO.map((h, i) => {
     const p = byId[h.id];
-    const img = document.createElement('img');
-    img.className = 'hero-bottle' + (i === 0 ? ' on' : '');
-    img.src = `assets/img/products/${h.id}-lg.webp`;
-    img.alt = i === 0 ? label(p) : '';
-    img.width = 330; img.height = 1100;
-    img.decoding = 'async';
-    if (i === 0) img.fetchPriority = 'high'; else img.loading = 'eager';
-    tiltEl.appendChild(img);
-    return img;
+    const wrap = document.createElement('div');
+    wrap.className = 'hero-bottle' + (i === 0 ? ' on' : '');
+    wrap.setAttribute('role', 'img');
+    wrap.setAttribute('aria-label', label(p));
+    if (i) wrap.setAttribute('aria-hidden', 'true');
+    for (const side of ['front', 'back']) {
+        const img = document.createElement('img');
+        img.className = 'face' + (side === 'back' ? ' back' : '');
+        img.src = `assets/img/products/${h.id}-lg.webp`;
+        img.alt = '';
+        img.width = 330; img.height = 1100;
+        img.decoding = 'async';
+        if (i === 0) img.fetchPriority = 'high';
+        wrap.appendChild(img);
+    }
+    tiltEl.appendChild(wrap);
+    return wrap;
 });
 
 const picker = $('#picker');
@@ -123,9 +132,9 @@ setHeroAsk(0);
 
 function swapBottle(from, to) {
     bottleEls[from].classList.remove('on');
-    bottleEls[from].alt = '';
+    bottleEls[from].setAttribute('aria-hidden', 'true');
     bottleEls[to].classList.add('on');
-    bottleEls[to].alt = label(byId[HERO[to].id]);
+    bottleEls[to].removeAttribute('aria-hidden');
 }
 
 function selectHero(i) {
@@ -146,19 +155,17 @@ function selectHero(i) {
         return;
     }
     gsap.to(heroEl, { '--bg-inner': h.theme[0], '--bg-mid': h.theme[1], '--bg-outer': h.theme[2], '--glow': h.glow, duration: 1.5, ease: 'power2.inOut' });
-    // spin 0→360 with blur, swap at the peak, 360→720 settling back (Soda brief)
+    // turntable spin on the vertical axis, like the 3D bottle had: 0→360 with blur, swap, 360→720 settling (Soda brief)
     spinning = true;
     const cur = bottleEls[from], next = bottleEls[i];
-    gsap.to(tiltEl, { filter: 'blur(15px)', duration: 0.6, ease: 'power2.in' });
     gsap.to(cur, {
-        rotation: 360, duration: 0.6, ease: 'power2.in',
+        rotationY: 360, scale: 0.92, '--blur': '15px', duration: 0.6, ease: 'power2.in',
         onComplete() {
             swapBottle(from, i);
-            gsap.set(cur, { rotation: 0 });
-            gsap.to(tiltEl, { filter: 'blur(0px)', duration: 1.2, ease: 'power2.out', onComplete() { tiltEl.style.filter = ''; } });
-            gsap.fromTo(next, { rotation: 360 }, {
-                rotation: 720, duration: 1.5, ease: 'back.out(0.7)',
-                onComplete() { gsap.set(next, { rotation: 0 }); spinning = false; },
+            gsap.set(cur, { rotationY: 0, scale: 1, '--blur': '0px' });
+            gsap.fromTo(next, { rotationY: 360, scale: 0.92, '--blur': '15px' }, {
+                rotationY: 720, scale: 1, '--blur': '0px', duration: 1.5, ease: 'back.out(0.7)',
+                onComplete() { gsap.set(next, { rotationY: 0 }); spinning = false; },
             });
         },
     });
@@ -311,6 +318,7 @@ const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase
         shelfEls.forEach(s => { s.hidden = !$$('.item', s).some(li => !li.hidden); });
         resultCount.textContent = (q || filter !== 'all') ? `${n} ${n === 1 ? 'bebida encontrada' : 'bebidas encontradas'}` : `${n} bebidas no catálogo`;
         empty.classList.toggle('show', n === 0);
+        if (window.__revealShelvesInView) requestAnimationFrame(window.__revealShelvesInView);
         if (n === 0) $('#empty-ask').href = waLink(`Olá, Adega Milão! Procurei no site e não achei: *${query.trim().slice(0, 80) || 'uma bebida'}*. Vocês têm?`);
     }
     toggles.addEventListener('click', e => {
@@ -395,5 +403,168 @@ const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase
             if (en.isIntersecting) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${en.target.id}`));
         });
     }, { rootMargin: '-45% 0px -50% 0px' });
-    ['inicio', 'ofertas', 'copao', 'catalogo', 'lojas'].forEach(id => io.observe(document.getElementById(id)));
+    ['inicio', 'ofertas', 'copao', 'catalogo', 'loja'].forEach(id => io.observe(document.getElementById(id)));
+})();
+
+/* =========================================================
+   Motion: one page-load sequence, then reveals as you scroll
+   ========================================================= */
+const motionOK = !reduceMotion && hasGsap();
+const ST = motionOK && window.ScrollTrigger ? window.ScrollTrigger : null;
+if (ST) gsap.registerPlugin(ST);
+
+function showStatic() { $$('.intro').forEach(el => { el.style.opacity = '1'; }); }
+
+function playIntro() {
+    if (!motionOK) { showStatic(); return; }
+    heroEl.classList.add('intro-run');
+    const tl = gsap.timeline({
+        defaults: { ease: 'expo.out' },
+        onComplete() { heroEl.classList.remove('intro-run'); },
+    });
+    tl.fromTo('.main-title .intro', { y: 90, opacity: 0, filter: 'blur(14px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.4, stagger: 0.12, clearProps: 'transform,filter' }, 0.05)
+      .set(tiltEl, { opacity: 1 }, 0.1)
+      .fromTo(bottleEls[0], { rotationY: -200, y: 140, scale: 0.78, '--blur': '18px' }, { rotationY: 0, y: 0, scale: 1, '--blur': '0px', duration: 2, ease: 'expo.out', clearProps: 'transform' }, 0.1)
+      .fromTo(['.description.intro', '.primary-btn.intro'], { y: 34, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, stagger: 0.1, clearProps: 'transform' }, 0.5)
+      .set('#picker', { opacity: 1 }, 0.55)
+      .fromTo('.pick', { y: 60, opacity: 0 }, { y: 0, opacity: (k, el) => el.getAttribute('aria-pressed') === 'true' ? 1 : 0.62, duration: 1.1, stagger: 0.09, ease: 'back.out(1.5)', clearProps: 'transform,opacity' }, 0.55)
+      .fromTo('.picker-nav.intro', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, clearProps: 'transform' }, 0.8)
+      .fromTo('.side-title .intro', { x: 60, opacity: 0, filter: 'blur(10px)' }, { x: 0, opacity: 1, filter: 'blur(0px)', duration: 1.3, stagger: 0.1, clearProps: 'transform,filter' }, 0.7)
+      .fromTo('.badge.intro', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, clearProps: 'transform' }, 1)
+      .fromTo('.seal.intro', { scale: 0.3, rotation: -120, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 1.4, ease: 'back.out(1.7)', clearProps: 'transform' }, 0.95);
+}
+
+(() => {
+    const dlg = $('#age');
+    const start = () => (document.fonts ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 900))]) : Promise.resolve()).then(playIntro);
+    if (dlg.open) dlg.addEventListener('close', start, { once: true });
+    else start();
+})();
+
+/* ---------- moving brand strip: drifts on its own, speeds up with scroll ---------- */
+(() => {
+    const track = $('#ticker-track');
+    const group = $('.ticker-group', track);
+    track.appendChild(group.cloneNode(true));
+    if (reduceMotion) return;
+    if (!hasGsap()) { track.classList.add('css-run'); return; }
+    const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: 'none', repeat: -1 });
+    if (!ST) return;
+    let dir = 1;
+    ST.create({
+        trigger: track,
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: self => { if (self.isActive) loop.play(); else loop.pause(); },
+        onUpdate: self => {
+            dir = self.direction;
+            const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 350, 5);
+            gsap.to(loop, { timeScale: dir * boost, duration: 0.2, overwrite: true, onComplete: () => gsap.to(loop, { timeScale: dir, duration: 1.2, ease: 'power2.out' }) });
+        },
+    });
+})();
+
+/* ---------- scroll reveals ---------- */
+const revealShelf = shelf => {
+    if (shelf.dataset.shown) return;
+    shelf.dataset.shown = '1';
+    const tl = gsap.timeline();
+    tl.to($$('.ledge', shelf), { scaleX: 1, duration: 0.7, stagger: 0.05, ease: 'expo.out' })
+      .to($$('.spot', shelf), { y: 0, opacity: 1, duration: 0.8, stagger: 0.06, ease: 'back.out(1.5)' }, 0.15)
+      .to($$('.tag', shelf), { rotation: 0, opacity: 1, duration: 1.1, stagger: 0.06, ease: 'elastic.out(1, 0.45)' }, 0.45)
+      .to($$('.t-body', shelf), { y: 0, opacity: 1, duration: 0.7, stagger: 0.05, ease: 'expo.out', clearProps: 'transform' }, 0.5);
+};
+window.__revealShelvesInView = () => {
+    if (!ST) return;
+    ST.refresh();
+    $$('.shelf').forEach(s => { if (!s.hidden && s.getBoundingClientRect().top < innerHeight) revealShelf(s); });
+};
+
+if (ST) {
+    const up = (targets, vars = {}) => gsap.set(targets, { y: 50, opacity: 0, ...vars });
+    // section headings
+    $$('.section-head').forEach(head => {
+        const h = $('.h2', head), lede = $('.lede', head);
+        gsap.set(h, { y: 70, opacity: 0, filter: 'blur(10px)' });
+        up(lede, { y: 30 });
+        ST.create({ trigger: head, start: 'top 85%', once: true, onEnter: () => {
+            gsap.to(h, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.3, ease: 'expo.out', clearProps: 'filter' });
+            gsap.to(lede, { y: 0, opacity: 1, duration: 1.1, delay: 0.15, ease: 'expo.out' });
+        } });
+    });
+    // lead offer: bottle rises onto its pool of light, then drifts with scroll
+    const lead = $('.o-render .pimg');
+    if (lead) {
+        gsap.set(lead, { y: 120, rotation: -8, opacity: 0 });
+        up(['.offer-hero .o-copy > *']);
+        ST.create({ trigger: '.offer-hero', start: 'top 80%', once: true, onEnter: () => {
+            gsap.to(lead, { y: 0, rotation: 0, opacity: 1, duration: 1.6, ease: 'expo.out', clearProps: 'transform' });
+            gsap.to('.offer-hero .o-copy > *', { y: 0, opacity: 1, duration: 1, stagger: 0.08, ease: 'expo.out', delay: 0.15 });
+        } });
+        gsap.fromTo('.o-render', { yPercent: 6 }, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: '.offer-hero', start: 'top bottom', end: 'bottom top', scrub: true } });
+    }
+    up('.offer-row', { x: 50, y: 0 });
+    ST.batch('.offer-row', { start: 'top 88%', once: true, onEnter: b => gsap.to(b, { x: 0, opacity: 1, duration: 1, stagger: 0.12, ease: 'expo.out' }) });
+    // copão
+    up('.steps .step');
+    ST.batch('.steps .step', { start: 'top 88%', once: true, onEnter: b => gsap.to(b, { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: 'expo.out' }) });
+    gsap.set('.cup-wrap', { y: 80, opacity: 0, rotation: -6 });
+    gsap.set('.comanda', { y: 120, opacity: 0, rotation: 8 });
+    ST.create({ trigger: '.copao-visual', start: 'top 85%', once: true, onEnter: () => {
+        gsap.to('.cup-wrap', { y: 0, opacity: 1, rotation: 0, duration: 1.3, ease: 'back.out(1.4)' });
+        gsap.to('.comanda', { y: 0, opacity: 1, rotation: innerWidth > 680 ? 1.2 : 0, duration: 1.4, delay: 0.12, ease: 'expo.out' });
+    } });
+    // shelves get stocked: ledge draws in, bottles land, price tags swing
+    gsap.set('.ledge', { scaleX: 0, transformOrigin: '0 50%' });
+    gsap.set('.spot', { y: -60, opacity: 0 });
+    gsap.set('.tag', { rotation: -18, opacity: 0, transformOrigin: '10% 0%' });
+    gsap.set('.t-body', { y: 20, opacity: 0 });
+    $$('.shelf').forEach(shelf => ST.create({ trigger: shelf, start: 'top 82%', once: true, onEnter: () => revealShelf(shelf) }));
+    // instagram tiles
+    up('.insta a', { y: 70, scale: 0.96 });
+    ST.batch('.insta a', { start: 'top 90%', once: true, onEnter: b => gsap.to(b, { y: 0, scale: 1, opacity: 1, duration: 1.2, stagger: 0.1, ease: 'expo.out' }) });
+    // store: map unrolls, info rises
+    up('.store-info > *', { y: 30 });
+    gsap.set('.map-wrap', { clipPath: 'inset(0 0 100% 0)' });
+    ST.create({ trigger: '.store', start: 'top 80%', once: true, onEnter: () => {
+        gsap.to('.store-info > *', { y: 0, opacity: 1, duration: 1, stagger: 0.07, ease: 'expo.out' });
+        gsap.to('.map-wrap', { clipPath: 'inset(0 0 0% 0)', duration: 1.4, ease: 'expo.inOut', clearProps: 'clipPath' });
+    } });
+    up('.delivery', { y: 40 });
+    ST.create({ trigger: '.delivery', start: 'top 92%', once: true, onEnter: () => gsap.to('.delivery', { y: 0, opacity: 1, duration: 1, ease: 'expo.out' }) });
+    addEventListener('load', () => ST.refresh(), { once: true });
+}
+
+/* ---------- distance to the store (the visitor's location never leaves the browser) ---------- */
+(() => {
+    const STORE = { lat: -22.73, lng: -45.1157 }; // Av. Papa João XXIII, Centro, Lorena (aprox.)
+    const ROUTE = 'https://www.google.com/maps/dir/?api=1&destination=Av.%20Papa%20Jo%C3%A3o%20XXIII%2C%20130%2C%20Lorena%20-%20SP';
+    const btn = $('#locate-btn'), out = $('#locate-out');
+    const rad = d => d * Math.PI / 180;
+    function km(a, b) {
+        const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
+        const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+        return 6371 * 2 * Math.asin(Math.sqrt(h)) * 1.3; // ×1.3: streets are not a straight line
+    }
+    const fmtDist = d => d < 1 ? `${Math.max(50, Math.round(d * 1000 / 50) * 50)} m` : `${d.toFixed(1).replace('.', ',')} km`;
+    let waitT;
+    function done(html) { clearTimeout(waitT); btn.removeAttribute('aria-busy'); out.innerHTML = html; }
+    btn.addEventListener('click', () => {
+        if (!('geolocation' in navigator)) { done('Seu navegador não informa a localização. Use o botão <b>Como chegar</b>.'); return; }
+        btn.setAttribute('aria-busy', 'true');
+        out.textContent = 'Procurando você no mapa…';
+        // the permission prompt can sit unanswered; never leave the visitor waiting
+        waitT = setTimeout(() => done('Sem resposta da localização. Toque em <b>Como chegar</b> que o Google Maps traça a rota.'), 15000);
+        navigator.geolocation.getCurrentPosition(pos => {
+            const d = km({ lat: pos.coords.latitude, lng: pos.coords.longitude }, STORE);
+            const car = Math.max(1, Math.round(d / 25 * 60)), walk = Math.round(d / 4.8 * 60);
+            const link = `<a href="${ROUTE}" target="_blank" rel="noopener noreferrer">Traçar rota</a>`;
+            if (d > 40) done(`Você está a <strong>${fmtDist(d)}</strong> da loja. A entrega é só em Lorena, mas chama no WhatsApp que a gente ajuda. ${link}`);
+            else done(`Você está a <strong>${fmtDist(d)}</strong> da loja (aprox.): ${d < 2.5 ? `${walk} min a pé ou ` : ''}${car} min de carro. ${link}`);
+        }, err => {
+            done(err.code === 1
+                ? 'A localização não foi liberada. Toque em <b>Como chegar</b> que o Google Maps traça a rota.'
+                : 'Não deu pra achar sua localização agora. Toque em <b>Como chegar</b>.');
+        }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+    });
 })();

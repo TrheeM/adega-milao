@@ -20,12 +20,12 @@ Online catalog for Adega Milão (Depósito de Bebidas Milão). Every product lea
 
 ## Positioning
 
-Neighborhood depot with two stores in Lorena, weekly promos (posted on Instagram @adega_milao), combos built for copão (bebida + energético + gelo de sabor), and delivery in Lorena.
+Neighborhood depot in Lorena (Av. Papa João XXIII, 130), weekly promos (posted on Instagram @adega_milao), combos built for copão (bebida + energético + gelo de sabor), and delivery in Lorena.
 
 ## Operating Context
 
 - Instagram @adega_milao: loud yellow/red/black promo flyers, bulldog mascot logo ("Depósito de Bebidas Milão").
-- Loja 1: Av. Papa João XXIII, Nº 130, Lorena. Loja 2: Av. Bernardino de Campos, Nº 502, Lorena.
+- Loja: Av. Papa João XXIII, Nº 130, Centro, Lorena (the only address on the site, by owner request on 2026-10-11; a second store exists but is intentionally not shown).
 - Also sells mercearia and cerveja (bio).
 - Orders and stock questions happen on WhatsApp.
 

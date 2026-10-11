@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' blob:; worker-src 'self' blob:; frame-src https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Adega Milão | Depósito de Bebidas em Lorena</title>
 <meta name="description" content="Catálogo da Adega Milão em Lorena/SP: whisky, gin, vodka, tequila, cervejas, energéticos, gelo de sabor e combos pro copão. Pergunte a disponibilidade no WhatsApp e receba em casa.">
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://trheem.github.io/adega-milao/">
 <meta property="og:title" content="Adega Milão | Depósito de Bebidas em Lorena">
-<meta property="og:description" content="Whisky, gin, cerveja, energético e tudo pro copão. Duas lojas em Lorena e entrega na cidade.">
+<meta property="og:description" content="Whisky, gin, cerveja, energético e tudo pro copão. Loja na Av. Papa João XXIII, 130, em Lorena, e entrega na cidade.">
 <meta property="og:image" content="https://trheem.github.io/adega-milao/assets/img/ig-white-horse.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" type="image/png" href="assets/img/favicon-64.png">
@@ -25,27 +25,20 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "LiquorStore",
-      "name": "Adega Milão — Loja 1",
-      "alternateName": "Depósito de Bebidas Milão",
-      "telephone": "+55 12 98152-0564",
-      "address": { "@type": "PostalAddress", "streetAddress": "Av. Papa João XXIII, 130", "addressLocality": "Lorena", "addressRegion": "SP", "addressCountry": "BR" },
-      "sameAs": ["https://www.instagram.com/adega_milao/"]
-    },
-    {
-      "@type": "LiquorStore",
-      "name": "Adega Milão — Loja 2",
-      "alternateName": "Depósito de Bebidas Milão",
-      "telephone": "+55 12 98152-0564",
-      "address": { "@type": "PostalAddress", "streetAddress": "Av. Bernardino de Campos, 502", "addressLocality": "Lorena", "addressRegion": "SP", "addressCountry": "BR" },
-      "sameAs": ["https://www.instagram.com/adega_milao/"]
-    }
-  ]
+  "@type": "LiquorStore",
+  "name": "Adega Milão",
+  "alternateName": "Depósito de Bebidas Milão",
+  "url": "https://trheem.github.io/adega-milao/",
+  "image": "https://trheem.github.io/adega-milao/assets/img/logo-milao.png",
+  "telephone": "+55 12 98152-0564",
+  "address": { "@type": "PostalAddress", "streetAddress": "Av. Papa João XXIII, 130", "addressLocality": "Lorena", "addressRegion": "SP", "addressCountry": "BR" },
+  "hasMap": "https://www.google.com/maps/search/?api=1&query=Av.%20Papa%20Jo%C3%A3o%20XXIII%2C%20130%2C%20Lorena%20-%20SP",
+  "areaServed": "Lorena",
+  "sameAs": ["https://www.instagram.com/adega_milao/"]
 }
 </script>
 <script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
 <script type="module" src="assets/js/main.js"></script>
 </head>
 <body>
@@ -59,6 +52,7 @@
     <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
     <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3.2v2.8h-7" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" fill="none"/><circle cx="6.5" cy="17" r="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="17" cy="17" r="1.8" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
     <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="18" cy="6" r="2.2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M8.2 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></symbol>
     <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor"/></symbol>
 </svg>
 
@@ -88,7 +82,7 @@
         <a href="#ofertas" class="nav-item">Ofertas</a>
         <a href="#copao" class="nav-item">Copão</a>
         <a href="#catalogo" class="nav-item">Catálogo</a>
-        <a href="#lojas" class="nav-item">Lojas</a>
+        <a href="#loja" class="nav-item">Loja</a>
     </nav>
     <a class="btn-wa" data-wa="geral" href="https://wa.me/5512981520564" target="_blank" rel="noopener noreferrer">
         <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg><span class="long">Chamar no WhatsApp</span><span class="short">WhatsApp</span>
@@ -101,35 +95,53 @@
         <div id="bubbles-container" aria-hidden="true"></div>
         <div class="hero-content">
             <div class="hero-left">
-                <h1 class="main-title"><span>Puro</span><span>brinde.</span></h1>
-                <p class="description">Whisky, gin, tequila, cerveja e tudo pro copão. Escolha a bebida, pergunte no WhatsApp e a gente entrega em Lorena.</p>
-                <a class="primary-btn" href="#catalogo">Ver catálogo <span class="plus-icon"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span></a>
-                <div class="badge">
+                <h1 class="main-title"><span class="intro">Puro</span><span class="intro">brinde.</span></h1>
+                <p class="description intro">Whisky, gin, tequila, cerveja e tudo pro copão. Escolha a bebida, pergunte no WhatsApp e a gente entrega em Lorena.</p>
+                <a class="primary-btn intro" href="#catalogo">Ver catálogo <span class="plus-icon"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span></a>
+                <div class="badge intro">
                     <svg class="icon" aria-hidden="true"><use href="#i-truck"/></svg>
                     <div class="badge-text">
                         <span class="badge-title">Entrega em Lorena</span>
-                        <span class="badge-sub">ou retire na Loja 1 e na Loja 2</span>
+                        <span class="badge-sub">ou retire na Av. Papa João XXIII, 130</span>
                     </div>
                 </div>
             </div>
             <div class="hero-stage">
-                <div class="hero-tilt" id="hero-tilt"></div>
+                <div class="hero-tilt intro" id="hero-tilt"></div>
+                <div class="seal intro" aria-hidden="true">
+                    <svg class="seal-ring" viewBox="0 0 200 200">
+                        <defs><path id="seal-path" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs>
+                        <text><textPath href="#seal-path" textLength="498" lengthAdjust="spacing">DEPÓSITO DE BEBIDAS ✦ MILÃO ✦ LORENA ✦ </textPath></text>
+                    </svg>
+                    <img src="assets/img/logo-milao.png" alt="" width="96" height="96">
+                </div>
             </div>
             <div class="hero-right">
                 <div class="picker">
-                    <div class="picker-row" role="group" aria-label="Escolha a bebida em destaque" id="picker"></div>
-                    <div class="picker-nav">
+                    <div class="picker-row intro" role="group" aria-label="Escolha a bebida em destaque" id="picker"></div>
+                    <div class="picker-nav intro">
                         <button class="nav-arrow" type="button" id="hero-prev" aria-label="Bebida anterior"><svg class="icon" aria-hidden="true"><use href="#i-left"/></svg></button>
                         <button class="nav-arrow" type="button" id="hero-next" aria-label="Próxima bebida"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></button>
                         <a class="btn-wa" id="hero-ask" href="https://wa.me/5512981520564" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>Tem disponível?</a>
                     </div>
                     <p class="sr-only" aria-live="polite" id="hero-live"></p>
                 </div>
-                <p class="side-title" aria-hidden="true"><span>Sempre</span><span>gelada.</span></p>
+                <p class="side-title" aria-hidden="true"><span class="intro">Sempre</span><span class="intro">gelada.</span></p>
             </div>
         </div>
         <canvas class="hero-canvas" id="hero-front" aria-hidden="true"></canvas>
     </section>
+
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-track" id="ticker-track">
+            <div class="ticker-group">
+                <img src="assets/img/logo-milao.png" alt="" width="56" height="56"><span>Adega Milão</span>
+                <img src="assets/img/logo-milao.png" alt="" width="56" height="56"><span>Sempre gelada</span>
+                <img src="assets/img/logo-milao.png" alt="" width="56" height="56"><span>Copão do jeito certo</span>
+                <img src="assets/img/logo-milao.png" alt="" width="56" height="56"><span>Entrega em Lorena</span>
+            </div>
+        </div>
+    </div>
 
     <section class="section" id="ofertas" aria-labelledby="ofertas-title">
         <div class="wrap">
@@ -266,29 +278,30 @@
         </div>
     </section>
 
-    <section class="section" id="lojas" aria-labelledby="lojas-title">
+    <section class="section" id="loja" aria-labelledby="loja-title">
         <div class="wrap">
             <div class="section-head">
-                <h2 class="h2" id="lojas-title">Duas lojas em Lorena</h2>
+                <h2 class="h2" id="loja-title">Venha até a adega</h2>
                 <p class="lede">Passe pra buscar ou peça pelo WhatsApp que a gente entrega. Também tem mercearia e cerveja gelada.</p>
             </div>
-            <div class="stores">
-                <article class="store">
-                    <h3>Loja 1</h3>
-                    <address>Av. Papa João XXIII, 130<small>Lorena, SP</small></address>
+            <div class="store">
+                <div class="store-info">
+                    <img class="store-logo" src="assets/img/logo-milao.png" alt="" width="72" height="72" loading="lazy">
+                    <h3>Adega Milão</h3>
+                    <address>Av. Papa João XXIII, 130<small>Centro · Lorena, SP</small></address>
                     <div class="store-actions">
-                        <a class="btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%20Papa%20Jo%C3%A3o%20XXIII%2C%20130%2C%20Lorena%20-%20SP" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Abrir no mapa</a>
-                        <a class="btn-wa" data-wa="loja1" href="https://wa.me/5512981520564" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
+                        <a class="btn-wa" href="https://www.google.com/maps/dir/?api=1&amp;destination=Av.%20Papa%20Jo%C3%A3o%20XXIII%2C%20130%2C%20Lorena%20-%20SP" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-route"/></svg>Como chegar</a>
+                        <a class="btn-ghost" data-wa="loja1" href="https://wa.me/5512981520564" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
                     </div>
-                </article>
-                <article class="store">
-                    <h3>Loja 2</h3>
-                    <address>Av. Bernardino de Campos, 502<small>Lorena, SP</small></address>
-                    <div class="store-actions">
-                        <a class="btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%20Bernardino%20de%20Campos%2C%20502%2C%20Lorena%20-%20SP" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Abrir no mapa</a>
-                        <a class="btn-wa" data-wa="loja2" href="https://wa.me/5512981520564" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
+                    <div class="locate">
+                        <button class="btn-ghost" type="button" id="locate-btn"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Quanto falta até a loja?</button>
+                        <p class="locate-out" id="locate-out" aria-live="polite"></p>
                     </div>
-                </article>
+                </div>
+                <div class="map-wrap">
+                    <iframe class="map" title="Mapa da Adega Milão: Av. Papa João XXIII, 130, Lorena" src="https://maps.google.com/maps?q=Av.%20Papa%20Jo%C3%A3o%20XXIII%2C%20130%2C%20Lorena%20-%20SP&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allowfullscreen></iframe>
+                    <a class="map-open" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%20Papa%20Jo%C3%A3o%20XXIII%2C%20130%2C%20Lorena%20-%20SP" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg>Abrir no Google Maps</a>
+                </div>
             </div>
             <div class="delivery">
                 <div class="delivery-copy">
@@ -305,7 +318,7 @@
     <div class="footer-inner">
         <a class="logo" href="#inicio" aria-label="Adega Milão, voltar ao início">
             <img src="assets/img/logo-milao.png" alt="" width="56" height="56" loading="lazy">
-            <span class="logo-word"><strong>Milão</strong><span>Depósito de Bebidas · Lorena</span></span>
+            <span class="logo-word"><strong>Milão</strong><span>Av. Papa João XXIII, 130 · Lorena</span></span>
         </a>
         <p class="legal"><strong>Proibida a venda de bebidas alcoólicas para menores de 18 anos.</strong> Beba com moderação. Se beber, não dirija. Preços e estoque sujeitos a alteração; confirme pelo WhatsApp. Fotos ilustrativas das marcas.</p>
         <div class="footer-links">
