@@ -32,11 +32,12 @@ Precisa de servidor (módulos ES e o modelo 3D não abrem via `file://`).
 | `assets/css/main.css` | Estilos |
 | `assets/js/main.js` | Catálogo, ofertas, copão, WhatsApp, topo |
 | `assets/js/garnish.js` | Gelo, frutas e folhas 3D do topo (Three.js, carregado depois) |
+| `assets/fonts/` | Bodoni Moda, Schibsted Grotesk e Courier Prime (woff2, SIL OFL) |
 | `assets/vendor/` | GSAP 3.12.5 e Three.js r169 servidos pelo próprio site (do npm) |
 
 ## Segurança e desempenho
 
-- Content-Security-Policy sem scripts nem estilos inline; nada de JS de terceiros (só Google Fonts).
+- Content-Security-Policy sem scripts nem estilos inline; zero requisições a terceiros (fontes, GSAP e Three.js servidos pelo próprio site).
 - Links externos com `rel="noopener noreferrer"`; mensagens do WhatsApp com `encodeURIComponent`.
 - Fotos em WebP transparente com `loading="lazy"`; a cena 3D só carrega depois da página pronta e pausa fora da tela.
 - Respeita `prefers-reduced-motion`.

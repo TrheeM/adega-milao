@@ -1,0 +1,13 @@
+.lost {
+    min-height: 100svh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.25rem;
+    padding: 2rem var(--gutter);
+    text-align: center;
+    background: radial-gradient(40% 40% at 50% 38%, rgba(228,165,60,.18), transparent 70%), var(--oak);
+}
+.lost img { height: 200px; width: auto; filter: drop-shadow(0 20px 22px rgba(0,0,0,.55)); transform: rotate(-8deg); }
+.lost .h2 { max-width: 14ch; font-size: clamp(2.2rem, 6vw, 4rem); }
+.lost-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem; }
